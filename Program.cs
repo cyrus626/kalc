@@ -20,9 +20,9 @@ namespace Kalc
         {
             // Introduces the program
             string message = "Hello, Welcome to Kalc \n " +
-                "\n Please select an operation:" +
-                "\n 1. Addition" +
-                "\n 2. Subtraction";
+                "\nPlease select an operation:" +
+                "\n1. Addition" +
+                "\n2. Subtraction";
             Console.Write(message);
         }
     }
