@@ -5,3 +5,10 @@ C:\Users\Cyrus\Desktop\Kalc\obj\Debug\Kalc.csprojAssemblyReference.cache
 C:\Users\Cyrus\Desktop\Kalc\obj\Debug\Kalc.csproj.CoreCompileInputs.cache
 C:\Users\Cyrus\Desktop\Kalc\obj\Debug\Kalc.exe
 C:\Users\Cyrus\Desktop\Kalc\obj\Debug\Kalc.pdb
+C:\Users\PHILLIP\Desktop\kalc\obj\Debug\Kalc.csproj.AssemblyReference.cache
+C:\Users\PHILLIP\Desktop\kalc\obj\Debug\Kalc.csproj.CoreCompileInputs.cache
+C:\Users\PHILLIP\Desktop\kalc\obj\Debug\Kalc.exe
+C:\Users\PHILLIP\Desktop\kalc\obj\Debug\Kalc.pdb
+C:\Users\PHILLIP\Desktop\kalc\bin\Debug\Kalc.exe.config
+C:\Users\PHILLIP\Desktop\kalc\bin\Debug\Kalc.exe
+C:\Users\PHILLIP\Desktop\kalc\bin\Debug\Kalc.pdb

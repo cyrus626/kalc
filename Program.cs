@@ -8,15 +8,18 @@ namespace Kalc
 {
     class Program
     {
-        static int SelectedOperation { get; set; }
+        static List<char> CharOperator = new List<char>();
+        static char charOPerator;
+        static int NumberOfRuns =0;
+        static double Result;
         static List<double>  DataCollector = new List<double>();
-        static string Message { get; set; }
+        static string Message;
         static void Main(string[] args)
         {
             //welcome to kalc
             //this applicaton works as a console calculator
             Intro();
-            SelectOperation();
+            //SelectOperation();
             Console.ReadKey();
 
             //OutPuts
@@ -32,73 +35,17 @@ namespace Kalc
                 "\n1. Addition" +
                 "\n2. Subtraction" +
                 "\n3. Multiplication" +
-                "\n4. Division";
+                "\n4. Division\n";
             Console.WriteLine(message);
-            
-        }
-        private static double GetInput(string inputValue, string typeOfInput)
-        {
-            //Get input and checks out wrong input
-            double inputValueD;
-            bool validateString;
-            switch (typeOfInput)
-            {
-                case "selectOperation":
-                    validateString = double.TryParse(inputValue, out inputValueD);
-                    if (validateString == false)
-                    {
-                    }
-                    return inputValueD;
-                case "ToDo":
-                    if (inputValue.Equals(null) || inputValue.Equals(""))
-                    {
-                        return 0;
-                    }
-                    else
-                    {
-
-                    }
-                        
-                    do
-                    {
-                        string inputedValue = Console.ReadLine();
-                        if (inputedValue == )
-                        validateString = double.TryParse(inputedValue, out inputValueD);
-                        if (validateString == false)
-                        {
-                            Console.WriteLine("Wrong input, try again> ");
-                        }
-                    } while (validateString == false);
-                    return inputValueD;
-            }
-            
-        }
-        static void Validate()
-        {
-            bool validateString;
-            do
-            {
-                Console.WriteLine("Wrong input, try again> ");
-                string selectOperation = Console.ReadLine();
-                validateString = double.TryParse(inputValue, out inputValueD);
-            } while (validateString == false);
+            SelectOperation();
         }
         private static void SelectOperation()
         {
             int selectedOperation;
-            do
-            {
-                Console.Write("Enter a number to select an option> ");
-                string selectOperation = Console.ReadLine();
-                string typeOfInput = "selectOperation";
-                selectedOperation = (int) GetInput(selectOperation, typeOfInput);
-                selectedOperation = SelectedOperation;
-                if(selectedOperation > 4 || selectedOperation < 1)
-                {
-                    Console.WriteLine("Invalid Output, Please try again\n");
-                }
-            } while (selectedOperation > 4 || selectedOperation < 1);
-
+            Console.Write("Enter a number to select an option> ");
+            string selectOperation = Console.ReadLine();
+            string typeOfInput = "selectOperation";
+            selectedOperation = (int)GetInput(selectOperation, typeOfInput);
             switch (selectedOperation)
             {
                 case 1:
@@ -109,7 +56,6 @@ namespace Kalc
                     SubtractionOperation();
                     break;
                 case 3:
-                    //To do multiplication operation
                     MultiplicationOperation();
                     break;
                 case 4:
@@ -118,51 +64,116 @@ namespace Kalc
                     break;
             }
         }
+        private static void Info(string message)
+        {
+
+            Console.WriteLine($"Plese enter number to start the {message}");
+        }
+        private static double GetInput(string inputValue, string typeOfInput)
+        {
+            //Get input and checks out wrong input
+            bool validateString;
+            validateString = double.TryParse(inputValue, out double outputValue);
+            switch (typeOfInput)
+            {
+                case "selectOperation":
+                    if (validateString == false)
+                    {
+                        SelectOperation();
+                    }
+                    else if (outputValue > 4 || outputValue < 1)
+                    {
+                        Console.WriteLine("Invalid Output, Please try again\n");
+                        SelectOperation();
+                    }
+                    break;
+                case "toDo":
+                    if (inputValue.Equals(null) || inputValue.Equals(""))
+                    {
+                        //When user leave blank.
+                        CollateResult();
+                    }
+                    else if (validateString == false)
+                    {
+                        //Collect data again;
+                        NumberOfRuns =- 1;
+                        CollectData(Message, charOPerator, out outputValue);
+                    }
+                    break;
+            }
+            return outputValue;
+        }
+        
         private static void AdditionOperation()
         {
-            Console.WriteLine("Addition in operation");
-            //Ask for first input.
-            Console.Write("Enter a number to begin addition> ");
-            GetInput();
-            DataCollector.Add((double)SelectedOperation);
-            //Ask for second input.
-            Console.Write("Enter another number to continue addition> ");
-            GetInput();
-            DataCollector.Add((double)SelectedOperation);
-            GetRestInput();
-
+            //Coming for the first time
+            charOPerator = '+';
+            double input;
+            Message = "addition";
+            if (NumberOfRuns == 0) { Info(Message); }
+            Message = "addition";
+            CollectData(Message, charOPerator, out input);
+            Result += input;
         }
-        static void GetRestInput() 
-        {
-            Console.Write("Enter another number or leave blank to exit");
-            int inputValue;
-            bool validateString;
-            do
-            {
-                string selectOperation = Console.ReadLine();
-                validateString = int.TryParse(selectOperation, out selectedOperation);
-                if (validateString == false)
-                {
-                    Console.WriteLine("Wrong input, try again> ");
-                }
-                else
-                {
-                    SelectedOperation = selectedOperation;
-                }
-            } while (validateString == false);
-
-        }
+        
         private static void SubtractionOperation()
         {
-            Message = "Subtraction in operation";
+            //Coming for the first time
+            charOPerator = '-';
+            double input;
+            Message = "subtraction";
+            if (NumberOfRuns == 0) { Info(Message); }
+            CollectData(Message, charOPerator, out input);
+            Result -= input;
         }
         private static void MultiplicationOperation()
         {
-            Message = "Multiplication in operation";
+            //Coming for the first time
+            charOPerator = '-';
+            double input;
+            if (NumberOfRuns == 0) { Info(Message); }
+            Message = "multiplication";
+            CollectData(Message, charOPerator, out input);
+            Result *= input;
         }
         private static void DivisionOperation()
         {
-            Message = "Division operation";
+            //Coming for the first time
+            charOPerator = '-';
+            double input;
+            Message = "division";
+            if (NumberOfRuns == 0) { Info(Message); }
+            CollectData(Message, charOPerator, out input);
+            Result /=input;
+        }
+        private static void CollectData(string message, char charOperation, out double input)
+        {
+            if (NumberOfRuns == 0)
+            {
+                Console.Write($"Plese enter a number to start {message}> ");
+            }
+            else if (NumberOfRuns == 1)
+            {
+                Console.Write("Plese enter another number> ");
+            }
+            else
+            {
+                Console.Write($"Plese enter another number or leave empty to exit (Ans: {Result})> ");
+            }
+            NumberOfRuns = +1;
+            input = GetInput(Console.ReadLine(), "toDo");
+            CharOperator.Add(charOperation);
+            DataCollector.Add(input);
+            SelectOperation();
+        }
+        private static void CollateResult()
+        {
+            Console.Write($"Done! {DataCollector[0]}");
+            for(int i = 0; i <= DataCollector.Count(); i++)
+            {
+                Console.Write($"{CharOperator[i]} {DataCollector[i++]}");
+            }
+            Console.Write("-->");
         }
     }
 }
