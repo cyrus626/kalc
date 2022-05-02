@@ -9,8 +9,8 @@ namespace Kalc
     class Program
     {
         static List<char> CharOperator = new List<char>();
-        static char charOPerator;
-        static int NumberOfRuns =0;
+        static char SelectOPerator;
+        static int NumberOfRuns=0;
         static double Result;
         static List<double>  DataCollector = new List<double>();
         static string Message;
@@ -19,13 +19,8 @@ namespace Kalc
             //welcome to kalc
             //this applicaton works as a console calculator
             Intro();
-            //SelectOperation();
+            SelectOperation();
             Console.ReadKey();
-
-            //OutPuts
-            //Hello, Welcome to Kalc
-            //Please select an operation:
-            //Enter in a number to select an option
         }
         private static void Intro()
         {
@@ -37,12 +32,11 @@ namespace Kalc
                 "\n3. Multiplication" +
                 "\n4. Division\n";
             Console.WriteLine(message);
-            SelectOperation();
         }
         private static void SelectOperation()
         {
             int selectedOperation;
-            Console.Write("Enter a number to select an option> ");
+            Console.Write("Enter a number to select an operation> ");
             string selectOperation = Console.ReadLine();
             string typeOfInput = "selectOperation";
             selectedOperation = (int)GetInput(selectOperation, typeOfInput);
@@ -64,11 +58,7 @@ namespace Kalc
                     break;
             }
         }
-        private static void Info(string message)
-        {
-
-            Console.WriteLine($"Plese enter number to start the {message}");
-        }
+        #region
         private static double GetInput(string inputValue, string typeOfInput)
         {
             //Get input and checks out wrong input
@@ -79,6 +69,7 @@ namespace Kalc
                 case "selectOperation":
                     if (validateString == false)
                     {
+                        Console.WriteLine("Invalid type of input, please try again\n");
                         SelectOperation();
                     }
                     else if (outputValue > 4 || outputValue < 1)
@@ -88,92 +79,126 @@ namespace Kalc
                     }
                     break;
                 case "toDo":
-                    if (inputValue.Equals(null) || inputValue.Equals(""))
+                    if (NumberOfRuns > 1 && (inputValue.Equals(null) || inputValue.Equals("")))
                     {
                         //When user leave blank.
+                        outputValue = -1;
                         CollateResult();
                     }
                     else if (validateString == false)
                     {
                         //Collect data again;
-                        NumberOfRuns =- 1;
-                        CollectData(Message, charOPerator, out outputValue);
+                        Console.WriteLine("Wrong input, please put a number");
+                        NumberOfRuns--;
+                        CollectData(Message, SelectOPerator, out outputValue);
                     }
                     break;
             }
             return outputValue;
         }
-        
+        #endregion
+        #region
         private static void AdditionOperation()
         {
-            //Coming for the first time
-            charOPerator = '+';
-            double input;
+            SelectOPerator = '+';
             Message = "addition";
-            if (NumberOfRuns == 0) { Info(Message); }
-            Message = "addition";
-            CollectData(Message, charOPerator, out input);
-            Result += input;
+            CollectData(Message, SelectOPerator, out double input);
         }
         
         private static void SubtractionOperation()
         {
             //Coming for the first time
-            charOPerator = '-';
+            SelectOPerator = '-';
             double input;
             Message = "subtraction";
-            if (NumberOfRuns == 0) { Info(Message); }
-            CollectData(Message, charOPerator, out input);
-            Result -= input;
+            CollectData(Message, SelectOPerator, out input);
         }
+
         private static void MultiplicationOperation()
         {
             //Coming for the first time
-            charOPerator = '-';
+            SelectOPerator = '*';
             double input;
-            if (NumberOfRuns == 0) { Info(Message); }
             Message = "multiplication";
-            CollectData(Message, charOPerator, out input);
-            Result *= input;
+            CollectData(Message, SelectOPerator, out input);
         }
+
         private static void DivisionOperation()
         {
             //Coming for the first time
-            charOPerator = '-';
+            SelectOPerator = '/';
             double input;
             Message = "division";
-            if (NumberOfRuns == 0) { Info(Message); }
-            CollectData(Message, charOPerator, out input);
-            Result /=input;
+            CollectData(Message, SelectOPerator, out input);
         }
+        #endregion
+        #region
         private static void CollectData(string message, char charOperation, out double input)
         {
             if (NumberOfRuns == 0)
             {
-                Console.Write($"Plese enter a number to start {message}> ");
+                Console.Write($"Plese enter a number to start the {message}> ");
+                NumberOfRuns++;
+                input = GetInput(Console.ReadLine(), "toDo");
+                CharOperator.Add(charOperation);
+                DataCollector.Add(input);
+                DoOperation(message, input);
+                //To get the second value
+                CollectData(Message, SelectOPerator, out input);
             }
             else if (NumberOfRuns == 1)
             {
-                Console.Write("Plese enter another number> ");
+                Console.Write("Plese enter the second number> ");
+                NumberOfRuns++;
+                input = GetInput(Console.ReadLine(), "toDo");
+                CharOperator.Add(charOperation);
+                DataCollector.Add(input);
+                DoOperation(message, input);
+                SelectOperation();
             }
             else
             {
-                Console.Write($"Plese enter another number or leave empty to exit (Ans: {Result})> ");
+                Console.Write($"\nPlese enter another number or leave empty to exit (Ans: {Result})> ");
+                NumberOfRuns++;
+                input = GetInput(Console.ReadLine(), "toDo");
+                if (input != -1)
+                {
+                    CharOperator.Add(charOperation);
+                    DataCollector.Add(input);
+                    DoOperation(message, input);
+                    SelectOperation();
+                }
             }
-            NumberOfRuns = +1;
-            input = GetInput(Console.ReadLine(), "toDo");
-            CharOperator.Add(charOperation);
-            DataCollector.Add(input);
-            SelectOperation();
+        }
+        #endregion
+        #region
+        private static void DoOperation(string message, double input)
+        {
+            switch (message)
+            {
+                case "addition":
+                    Result += input;
+                    break;
+                case "subtraction":
+                    Result -= input;
+                    break;
+                case "multiplcation":
+                    Result *= input;
+                    break;
+                case "division":
+                    Result /= input;
+                    break;
+            }
         }
         private static void CollateResult()
         {
             Console.Write($"Done! {DataCollector[0]}");
-            for(int i = 0; i <= DataCollector.Count(); i++)
+            for(int i = 0; i <= DataCollector.Count() - 1; i++)
             {
-                Console.Write($"{CharOperator[i]} {DataCollector[i++]}");
+                Console.Write($" {CharOperator[i]} {DataCollector[i++]}");
             }
-            Console.Write("-->");
+            Console.Write($" = {Result}");
         }
+        #endregion
     }
 }
